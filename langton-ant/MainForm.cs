@@ -22,17 +22,40 @@ namespace langton_ant
 
             board = new Board(30, 20);
             random = new Random();
+            /*
             for(int i = 0; i < 20; i++)
             {
                 randomColor = Color.FromArgb(random.Next(128),
                                              random.Next(128),
                                              random.Next(128));
 
-                board.AddAnt(randomColor, random.Next(80)+40);
+                board.AddAnt(randomColor, random.Next(120)+40);
             }
+            */
+
+            Ant ant1 = new Ant(board, Color.Red, 80);
+            ant1.Position = new Point(1, 1);
+
+            Ant ant2 = new Ant(board, Color.Black, 100);
+            ant2.Position = new Point(10, 4);
+
+            Ant ant3 = new Ant(board, Color.Yellow, 120);
+            ant3.Position = new Point(15, 2);
+
+            Ant ant4 = new Ant(board, Color.Green, 140);
+            ant4.Position = new Point(28, 16);
+
+            Ant ant5 = new Ant(board, Color.Orange, 160);
+            ant5.Position = new Point(15, 15);
+
+            board.AddAnt(ant1);
+            board.AddAnt(ant2);
+            board.AddAnt(ant3);
+            board.AddAnt(ant4);
+            board.AddAnt(ant5);
 
             timer = new Timer();
-            timer.Interval = 60;
+            timer.Interval = 30;
             timer.Tick += Main_Tick;
             timer.Start();
         }
@@ -73,7 +96,8 @@ namespace langton_ant
                                                (int)tileSize.X - 2,
                                                (int)tileSize.Y - 2);
 
-                g.FillRectangle(new SolidBrush(ant.Color), rect);
+                //g.FillRectangle(new SolidBrush(ant.Color), rect);
+                g.FillEllipse(new SolidBrush(ant.Color), rect);
             }
 
 

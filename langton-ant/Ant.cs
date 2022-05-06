@@ -10,7 +10,7 @@ namespace langton_ant
 {
     enum Direction
     {
-        up,
+        up = 0,
         down,
         left,
         right
@@ -32,7 +32,7 @@ namespace langton_ant
             this.color = color;
             position.X = random.Next(board.Width);
             position.Y = random.Next(board.Height);
-            direction = Direction.up;
+            direction = (Direction)random.Next(4);
 
             timer = new Timer();
             timer.Interval = interval;
@@ -42,6 +42,24 @@ namespace langton_ant
 
         private void Timer_Tick(object sender, EventArgs e)
         {
+            Color fieldColor = board.ColorMap[position.X, position.Y];
+            if(fieldColor == Color.White)
+            {
+                TurnAnt(Direction.left);
+                board.updateColor(position.X, position.Y, color);
+            }
+            else if(fieldColor == color)
+            {
+                TurnAnt(Direction.right);
+                board.updateColor(position.X, position.Y, Color.White);
+            }
+            else
+            {
+                TurnAnt(Direction.left);
+                TurnAnt(Direction.left);
+                board.updateColor(position.X, position.Y, color);
+            }
+
             switch(direction)
             {
                 case Direction.up:
@@ -64,10 +82,70 @@ namespace langton_ant
 
                 case Direction.left:
                     position.X -= 1;
+                    if(position.X < 0)
+                    {
+                        position.X = 0;
+                        direction = Direction.right;
+                    }
                     break;
 
                 case Direction.right:
                     position.X += 1;
+                    if (position.X > board.Width - 1)
+                    {
+                        position.X = board.Width - 1;
+                        direction = Direction.left;
+                    }
+                    break;
+            }
+        }
+
+        private void TurnAnt(Direction directionToTurn)
+        {
+            switch(direction)
+            {
+                case Direction.up:
+                    if(directionToTurn == Direction.left)
+                    {
+                        direction = Direction.left;
+                    }
+                    else
+                    {
+                        direction = Direction.right;
+                    }
+                    break;
+
+                case Direction.down:
+                    if (directionToTurn == Direction.left)
+                    {
+                        direction = Direction.right;
+                    }
+                    else
+                    {
+                        direction = Direction.left;
+                    }
+                    break;
+
+                case Direction.left:
+                    if (directionToTurn == Direction.left)
+                    {
+                        direction = Direction.down;
+                    }
+                    else
+                    {
+                        direction = Direction.up;
+                    }
+                    break;
+
+                case Direction.right:
+                    if (directionToTurn == Direction.left)
+                    {
+                        direction = Direction.up;
+                    }
+                    else
+                    {
+                        direction = Direction.down;
+                    }
                     break;
             }
         }

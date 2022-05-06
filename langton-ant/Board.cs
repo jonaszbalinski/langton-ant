@@ -40,6 +40,11 @@ namespace langton_ant
             antList.Add(newAnt);
         }
 
+        public void updateColor(int x, int y, Color color)
+        {
+            colorMap[x, y] = color;
+        }
+
         public int Width { get => width; set => width = value; }
         public int Height { get => height; set => height = value; }
         internal List<Ant> AntList { get => antList; set => antList = value; }
