@@ -48,16 +48,10 @@ namespace langton_ant
                 TurnAnt(Direction.left);
                 board.updateColor(position.X, position.Y, color);
             }
-            else if(fieldColor == color)
+            else
             {
                 TurnAnt(Direction.right);
                 board.updateColor(position.X, position.Y, Color.White);
-            }
-            else
-            {
-                TurnAnt(Direction.left);
-                TurnAnt(Direction.left);
-                board.updateColor(position.X, position.Y, color);
             }
 
             switch(direction)

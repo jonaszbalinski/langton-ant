@@ -20,42 +20,25 @@ namespace langton_ant
         {
             InitializeComponent();
 
-            board = new Board(30, 20);
+            int boardWidth = 144;
+            int boardHeight = 81;
+            double populationPercent = 10;
+            int populationSize = (int)((boardWidth*boardHeight) * (populationPercent/100.0));
+
+            board = new Board(boardWidth, boardWidth);
             random = new Random();
-            /*
-            for(int i = 0; i < 20; i++)
+            
+            for(int i = 0; i < populationSize; i++)
             {
-                randomColor = Color.FromArgb(random.Next(128),
-                                             random.Next(128),
-                                             random.Next(128));
+                randomColor = Color.FromArgb(random.Next(256),
+                                             random.Next(256),
+                                             random.Next(256));
 
                 board.AddAnt(randomColor, random.Next(120)+40);
             }
-            */
-
-            Ant ant1 = new Ant(board, Color.Red, 80);
-            ant1.Position = new Point(1, 1);
-
-            Ant ant2 = new Ant(board, Color.Black, 100);
-            ant2.Position = new Point(10, 4);
-
-            Ant ant3 = new Ant(board, Color.Yellow, 120);
-            ant3.Position = new Point(15, 2);
-
-            Ant ant4 = new Ant(board, Color.Green, 140);
-            ant4.Position = new Point(28, 16);
-
-            Ant ant5 = new Ant(board, Color.Orange, 160);
-            ant5.Position = new Point(15, 15);
-
-            board.AddAnt(ant1);
-            board.AddAnt(ant2);
-            board.AddAnt(ant3);
-            board.AddAnt(ant4);
-            board.AddAnt(ant5);
 
             timer = new Timer();
-            timer.Interval = 30;
+            timer.Interval = 60;
             timer.Tick += Main_Tick;
             timer.Start();
         }
@@ -67,8 +50,8 @@ namespace langton_ant
         private void DrawBoard()
         {
             PointF tileSize = new PointF();
-            tileSize.X = (gamePictureBox.Width - 1)  / (float)board.Width;
-            tileSize.Y = (gamePictureBox.Height - 1) / (float)board.Height;
+            tileSize.X = (gamePictureBox.Width)  / (float)board.Width;
+            tileSize.Y = (gamePictureBox.Height) / (float)board.Height;
 
             gamePictureBox.Image = new Bitmap(gamePictureBox.Width, gamePictureBox.Height);
             Graphics g = Graphics.FromImage(gamePictureBox.Image);
@@ -78,23 +61,23 @@ namespace langton_ant
             {
                 for(int y = 0; y < board.Height; y++)
                 {
-                    Rectangle rect = new Rectangle((int)(x * tileSize.X) + 1,
-                                                    (int)(y * tileSize.Y) + 1,
-                                                    (int)tileSize.X - 2,
-                                                    (int)tileSize.Y - 2);
+                    Rectangle rect = new Rectangle((int)(x * tileSize.X),
+                                                    (int)(y * tileSize.Y),
+                                                    (int)tileSize.X,
+                                                    (int)tileSize.Y);
                     SolidBrush brush = new SolidBrush(board.ColorMap[x, y]);
 
-                    g.DrawRectangle(new Pen(Color.Black), rect);
+                    //g.DrawRectangle(new Pen(Color.Black), rect);
                     g.FillRectangle(brush, rect);
                 }
             }
 
             foreach(Ant ant in board.AntList)
             {
-                Rectangle rect = new Rectangle((int)(ant.Position.X * tileSize.X) + 1,
-                                               (int)(ant.Position.Y * tileSize.Y) + 1,
-                                               (int)tileSize.X - 2,
-                                               (int)tileSize.Y - 2);
+                Rectangle rect = new Rectangle((int)(ant.Position.X * tileSize.X),
+                                               (int)(ant.Position.Y * tileSize.Y),
+                                               (int)tileSize.X,
+                                               (int)tileSize.Y);
 
                 //g.FillRectangle(new SolidBrush(ant.Color), rect);
                 g.FillEllipse(new SolidBrush(ant.Color), rect);
